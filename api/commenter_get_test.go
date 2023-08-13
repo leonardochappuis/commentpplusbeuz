@@ -7,7 +7,7 @@ import (
 func TestCommenterGetByHexBasics(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
-	commenterHex, _ := commenterNew("test@example.com", "Test", "undefined", "https://example.com/photo.jpg", "google", "")
+	commenterHex, _ := commenterNew("test@example.com", "Test", "undefined", "https://example.com/photo.jpg", "google", "", "undefined")
 
 	c, err := commenterGetByHex(commenterHex)
 	if err != nil {
@@ -33,7 +33,7 @@ func TestCommenterGetByHexEmpty(t *testing.T) {
 func TestCommenterGetByCommenterToken(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
-	commenterHex, _ := commenterNew("test@example.com", "Test", "undefined", "https://example.com/photo.jpg", "google", "")
+	commenterHex, _ := commenterNew("test@example.com", "Test", "undefined", "https://example.com/photo.jpg", "google", "", "undefined")
 
 	commenterToken, _ := commenterTokenNew()
 
@@ -63,7 +63,7 @@ func TestCommenterGetByCommenterTokenEmpty(t *testing.T) {
 func TestCommenterGetByName(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
-	commenterHex, _ := commenterNew("test@example.com", "Test", "undefined", "https://example.com/photo.jpg", "google", "")
+	commenterHex, _ := commenterNew("test@example.com", "Test", "undefined", "https://example.com/photo.jpg", "google", "", "undefined")
 
 	commenterToken, _ := commenterTokenNew()
 

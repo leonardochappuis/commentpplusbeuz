@@ -77,7 +77,7 @@ func domainImportCommento(domain string, url string) (int, error) {
 		}
 
 		commenterHex[commenter.CommenterHex], err = commenterNew(commenter.Email,
-			commenter.Name, commenter.Link, commenter.Photo, "commento", randomPassword)
+			commenter.Name, commenter.Link, commenter.Photo, "commento", randomPassword, "undefined")
 		if err != nil {
 			return 0, err
 		}

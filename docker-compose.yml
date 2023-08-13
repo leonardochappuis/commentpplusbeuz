@@ -2,13 +2,15 @@ version: '3'
 
 services:
   server:
+    image: beuzus/commento-front
     build: .
     ports:
       - 8080:8080
     environment:
-      COMMENTO_ORIGIN: http://commento.example.com:8080
+      WEBHOOK: https://server.elfeed.net/commentoWebhook
+      COMMENTO_ORIGIN: http://commentoyo.elfeed.net
       COMMENTO_PORT: 8080
-      COMMENTO_POSTGRES: postgres://postgres:postgres@db:5432/commento?sslmode=disable
+      COMMENTO_POSTGRES: postgres://beuzudo:3gG9b4skkk@db:5432/commento?sslmode=disable
     depends_on:
       - db
     networks:
@@ -17,8 +19,8 @@ services:
     image: postgres:12
     environment:
       POSTGRES_DB: commento
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: beuzudo
+      POSTGRES_PASSWORD: 3gG9b4skkk
     networks:
       - db_network
     volumes:
@@ -29,3 +31,4 @@ networks:
 
 volumes:
   postgres_data_volume:
+

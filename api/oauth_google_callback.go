@@ -3,9 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"golang.org/x/oauth2"
 	"io/ioutil"
 	"net/http"
+
+	"golang.org/x/oauth2"
 )
 
 func googleCallbackHandler(w http.ResponseWriter, r *http.Request) {
@@ -67,7 +68,7 @@ func googleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	var commenterHex string
 
 	if err == errorNoSuchCommenter {
-		commenterHex, err = commenterNew(email, name, link, photo, "google", "")
+		commenterHex, err = commenterNew(email, name, link, photo, "google", "", "undefined")
 		if err != nil {
 			fmt.Fprintf(w, "Error: %s", err.Error())
 			return

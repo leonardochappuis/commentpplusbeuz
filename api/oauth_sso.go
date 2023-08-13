@@ -11,6 +11,7 @@ type ssoPayload struct {
 	Name   string `json:"name"`
 	Link   string `json:"link"`
 	Photo  string `json:"photo"`
+	UserID string `json:"user_id"`
 }
 
 func ssoTokenNew(domain string, commenterToken string) (string, error) {

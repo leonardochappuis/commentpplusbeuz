@@ -3,11 +3,12 @@ package main
 import (
 	"compress/gzip"
 	"encoding/xml"
-	"github.com/lunny/html2md"
 	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/lunny/html2md"
 )
 
 type disqusThread struct {
@@ -131,7 +132,7 @@ func domainImportDisqus(domain string, url string) (int, error) {
 			return 0, errorInternal
 		}
 
-		commenterHex[email], err = commenterNew(email, post.Author.Name, "undefined", "undefined", "commento", randomPassword)
+		commenterHex[email], err = commenterNew(email, post.Author.Name, "undefined", "undefined", "commento", randomPassword, "undefined")
 		if err != nil {
 			return 0, err
 		}
@@ -150,7 +151,7 @@ func domainImportDisqus(domain string, url string) (int, error) {
 		if !post.Author.IsAnonymous {
 			cHex = commenterHex[post.Author.Username+"@disqus.com"]
 		} else if post.Author.Name != "" {
-			cHex, err = commenterNew("undefined", strings.TrimSpace(post.Author.Name), "undefined", "undefined", "anon", "undefined")
+			cHex, err = commenterNew("undefined", strings.TrimSpace(post.Author.Name), "undefined", "undefined", "anon", "undefined", "undefined")
 			if err != nil {
 				return 0, err
 			}

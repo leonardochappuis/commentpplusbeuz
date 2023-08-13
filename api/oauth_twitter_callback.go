@@ -77,7 +77,7 @@ func twitterCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	var commenterHex string
 
 	if err == errorNoSuchCommenter {
-		commenterHex, err = commenterNew(email, name, link, photo, "twitter", "")
+		commenterHex, err = commenterNew(email, name, link, photo, "twitter", "", "undefined")
 		if err != nil {
 			fmt.Fprintf(w, "Error: %s", err.Error())
 			return

@@ -1,7 +1,5 @@
 package main
 
-import ()
-
 var commentersRowColumns string = `
 	commenters.commenterHex,
 	commenters.email,
@@ -10,7 +8,8 @@ var commentersRowColumns string = `
 	commenters.photo,
 	commenters.provider,
 	commenters.joinDate,
-	commenters.deleted
+	commenters.deleted,
+	commenters.userID
 `
 
 func commentersRowScan(s sqlScanner, c *commenter) error {
@@ -23,6 +22,7 @@ func commentersRowScan(s sqlScanner, c *commenter) error {
 		&c.Provider,
 		&c.JoinDate,
 		&c.Deleted,
+		&c.UserID,
 	)
 }
 

@@ -3,10 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"golang.org/x/oauth2"
 	"io/ioutil"
 	"net/http"
 	"os"
+
+	"golang.org/x/oauth2"
 )
 
 func gitlabCallbackHandler(w http.ResponseWriter, r *http.Request) {
@@ -78,7 +79,7 @@ func gitlabCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	var commenterHex string
 
 	if err == errorNoSuchCommenter {
-		commenterHex, err = commenterNew(email, name, link, photo, "gitlab", "")
+		commenterHex, err = commenterNew(email, name, link, photo, "gitlab", "", "undefined")
 		if err != nil {
 			fmt.Fprintf(w, "Error: %s", err.Error())
 			return

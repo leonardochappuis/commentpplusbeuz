@@ -1,10 +1,11 @@
 package main
 
 import (
-	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"os"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func ownerNew(email string, name string, password string) (string, error) {
@@ -93,7 +94,7 @@ func ownerNewHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Errors in creating a commenter account should not hold this up.
-	_, _ = commenterNew(*x.Email, *x.Name, "undefined", "undefined", "commento", *x.Password)
+	_, _ = commenterNew(*x.Email, *x.Name, "undefined", "undefined", "commento", *x.Password, "undefined")
 
 	bodyMarshal(w, response{"success": true, "confirmEmail": smtpConfigured})
 }

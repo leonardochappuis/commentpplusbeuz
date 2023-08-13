@@ -7,8 +7,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func commenterNew(email string, name string, link string, photo string, provider string, password string) (string, error) {
-	if email == "" || name == "" || link == "" || photo == "" || provider == "" {
+func commenterNew(email string, name string, link string, photo string, provider string, password string, userID string) (string, error) {
+	if email == "" || name == "" || link == "" || photo == "" || provider == "" || userID == "" {
 		return "", errorMissingField
 	}
 
@@ -52,10 +52,10 @@ func commenterNew(email string, name string, link string, photo string, provider
 
 	statement := `
 		INSERT INTO
-		commenters (commenterHex, email, name, link, photo, provider, passwordHash, joinDate)
-		VALUES     ($1,           $2,    $3,   $4,   $5,    $6,       $7,           $8      );
+		commenters (commenterHex, email, name, link, photo, provider, passwordHash, joinDate, userID)
+		VALUES     ($1,           $2,    $3,   $4,   $5,    $6,       $7,           $8,       $9);
 	`
-	_, err = db.Exec(statement, commenterHex, email, name, link, photo, provider, string(passwordHash), time.Now().UTC())
+	_, err = db.Exec(statement, commenterHex, email, name, link, photo, provider, string(passwordHash), time.Now().UTC(), userID)
 	if err != nil {
 		logger.Errorf("cannot insert commenter: %v", err)
 		return "", errorInternal
@@ -85,7 +85,7 @@ func commenterNewHandler(w http.ResponseWriter, r *http.Request) {
 		*x.Website = "undefined"
 	}
 
-	if _, err := commenterNew(*x.Email, *x.Name, *x.Website, "undefined", "commento", *x.Password); err != nil {
+	if _, err := commenterNew(*x.Email, *x.Name, *x.Website, "undefined", "commento", *x.Password, "undefined"); err != nil {
 		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}

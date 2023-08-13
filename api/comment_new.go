@@ -1,7 +1,11 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
+	"net/url"
+	"os"
 	"strings"
 	"time"
 )
@@ -47,7 +51,6 @@ func commentNew(commenterHex string, domain string, path string, parentHex strin
 	}
 
 	hub.broadcast <- []byte(domain + path)
-
 	return commentHex, nil
 }
 
@@ -99,7 +102,7 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			// if given an anonName, add it to a new commenter entry
 			if strings.TrimSpace(*x.AnonName) != "" {
-				commenterHex, err = commenterNew("undefined", strings.TrimSpace(*x.AnonName), "undefined", "undefined", "anon", "undefined")
+				commenterHex, err = commenterNew("undefined", strings.TrimSpace(*x.AnonName), "undefined", "undefined", "anon", "undefined", "undefined")
 				if err != nil {
 					bodyMarshal(w, response{"success": false, "message": err.Error()})
 					return
@@ -156,5 +159,59 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 	bodyMarshal(w, response{"success": true, "commentHex": commentHex, "state": state, "html": html})
 	if smtpConfigured {
 		go emailNotificationNew(d, path, commenterHex, commentHex, html, *x.ParentHex, state)
+	}
+	// call a get into webhook
+	Webhook := os.Getenv("WEBHOOK")
+	if Webhook != "" {
+		logger.Info("commentNew: calling webhook")
+
+		commenterByHex, error := commenterGetByHex(commenterHex)
+		if error != nil {
+			logger.Info("error", error)
+		}
+		commenterMarshalled, jsonError := json.Marshal(commenterByHex)
+		if jsonError != nil {
+			logger.Info("error", jsonError)
+		}
+
+		params := url.Values{}
+
+		if *x.ParentHex != "root" {
+			comment, commentError := commentGetByCommentHex(*x.ParentHex)
+			if commentError != nil {
+				logger.Info("error", commentError)
+			}
+			if comment.CommenterHex == commenterHex {
+				params.Add("inReplyTo", "self")
+			} else {
+				originalCommentAuthor := comment.CommenterHex
+				originalCommentAuthorByHex, error := commenterGetByHex(originalCommentAuthor)
+				if error != nil {
+					logger.Info("error", error)
+				}
+				originalCommentAuthorMarshalled, jsonError := json.Marshal(originalCommentAuthorByHex)
+				if jsonError != nil {
+					logger.Info("error", jsonError)
+				}
+				params.Add("inReplyTo", string(originalCommentAuthorMarshalled))
+			}
+		} else {
+			params.Add("inReplyTo", "none")
+		}
+
+		params.Add("commenter", string(commenterMarshalled))
+		params.Add("domain", domain)
+		params.Add("path", path)
+		params.Add("html", html)
+		params.Add("state", state)
+
+		u, _ := url.ParseRequestURI(Webhook)
+		u.RawQuery = params.Encode()
+		urlStr := fmt.Sprintf("%v", u)
+
+		_, err = http.Get(urlStr)
+		if err != nil {
+			logger.Info("error", err)
+		}
 	}
 }

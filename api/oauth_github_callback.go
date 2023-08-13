@@ -3,9 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"golang.org/x/oauth2"
 	"io/ioutil"
 	"net/http"
+
+	"golang.org/x/oauth2"
 )
 
 func githubGetPrimaryEmail(accessToken string) (string, error) {
@@ -114,7 +115,7 @@ func githubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	var commenterHex string
 
 	if err == errorNoSuchCommenter {
-		commenterHex, err = commenterNew(email, name, link, photo, "github", "")
+		commenterHex, err = commenterNew(email, name, link, photo, "github", "", "undefined")
 		if err != nil {
 			fmt.Fprintf(w, "Error: %s", err.Error())
 			return

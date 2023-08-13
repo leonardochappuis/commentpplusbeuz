@@ -12,7 +12,7 @@ func TestCommenterLoginBasics(t *testing.T) {
 		return
 	}
 
-	commenterNew("test@example.com", "Test", "undefined", "undefined", "commento", "hunter2")
+	commenterNew("test@example.com", "Test", "undefined", "undefined", "commento", "hunter2", "undefined")
 
 	if _, err := commenterLogin("test@example.com", "hunter2"); err != nil {
 		t.Errorf("unexpected error when logging in: %v", err)
@@ -38,7 +38,7 @@ func TestCommenterLoginEmpty(t *testing.T) {
 		return
 	}
 
-	commenterNew("test@example.com", "Test", "undefined", "", "commenter", "hunter2")
+	commenterNew("test@example.com", "Test", "undefined", "", "commenter", "hunter2", "undefined")
 
 	if _, err := commenterLogin("test@example.com", ""); err == nil {
 		t.Errorf("expected error not found when passing empty password")
@@ -49,7 +49,7 @@ func TestCommenterLoginEmpty(t *testing.T) {
 func TestCommenterLoginNonCommento(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
-	commenterNew("test@example.com", "Test", "undefined", "undefined", "google", "")
+	commenterNew("test@example.com", "Test", "undefined", "undefined", "google", "", "undefined")
 
 	if _, err := commenterLogin("test@example.com", "hunter2"); err == nil {
 		t.Errorf("expected error not found logging into a non-Commento account")

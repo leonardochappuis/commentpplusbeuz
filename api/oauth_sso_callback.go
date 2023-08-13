@@ -45,6 +45,10 @@ func ssoCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		payload.Photo = "undefined"
 	}
 
+	if payload.UserID == "" {
+		payload.UserID = "undefined"
+	}
+
 	domain, commenterToken, err := ssoTokenExtract(payload.Token)
 	if err != nil {
 		fmt.Fprintf(w, "Error: %s\n", err.Error())
@@ -97,7 +101,7 @@ func ssoCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	var commenterHex string
 
 	if err == errorNoSuchCommenter {
-		commenterHex, err = commenterNew(payload.Email, payload.Name, payload.Link, payload.Photo, "sso:"+domain, "")
+		commenterHex, err = commenterNew(payload.Email, payload.Name, payload.Link, payload.Photo, "sso:"+domain, "", payload.UserID)
 		if err != nil {
 			fmt.Fprintf(w, "Error: %s", err.Error())
 			return

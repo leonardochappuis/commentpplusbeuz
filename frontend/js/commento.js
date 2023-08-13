@@ -381,11 +381,11 @@
     append(loggedInAs, avatar);
     append(loggedInAs, name);
     append(loggedContainer, loggedInAs);
-    append(loggedContainer, logoutButton);
+    // append(loggedContainer, logoutButton);
     if (commenter.provider === "commento") {
       append(loggedContainer, profileEditButton);
     }
-    append(loggedContainer, notificationSettingsButton);
+    // append(loggedContainer, notificationSettingsButton);
     prepend(root, loggedContainer);
 
     isAuthenticated = true;
@@ -434,26 +434,7 @@
 
   function footerLoad() {
     var footer = create("div");
-    var aContainer = create("div");
-    var a = create("a");
-    var text = create("span");
-
     footer.id = ID_FOOTER;
-
-    classAdd(footer, "footer");
-    classAdd(aContainer, "logo-container");
-    classAdd(a, "logo");
-    classAdd(text, "logo-text");
-
-    attrSet(a, "href", "https://github.com/souramoo/commentoplusplus");
-    attrSet(a, "target", "_blank");
-    attrSet(a, "rel", "noreferrer");
-
-    text.innerText = "Commento++";
-
-    append(a, text);
-    append(aContainer, a);
-    append(footer, aContainer);
 
     return footer;
   }
@@ -827,13 +808,13 @@
       }
     });
     if (numOauthConfigured > 0) {
-      append(login, loginText);
+      // append(login, loginText);
     } else if (!requireIdentification) {
       anonymousOnly = true;
     }
 
     if (!isAuthenticated) {
-      append(mainArea, login);
+      // append(mainArea, login);
     } else {
       remove($(ID_LOGIN));
     }

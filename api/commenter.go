@@ -14,4 +14,5 @@ type commenter struct {
 	JoinDate     time.Time `json:"joinDate,omitempty"`
 	IsModerator  bool      `json:"isModerator"`
 	Deleted      bool      `json:"deleted"`
+	UserID       string    `json:"userId,omitempty"`
 }
